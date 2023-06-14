@@ -9,147 +9,167 @@
 
 using namespace std;
 
-const char FINCAD = char(0);
-const int MAXCAD = 20;
+const char FINCAD = char(0); // Constant character for the end of string
+const int MAXCAD = 20; // Maximum length of a string
 
-const char SP = ' ';
+const char SP = ' '; // Constant character for a space
 char contrasena;
 int i;
-int contador=0;
+int contador = 0;
 
-typedef char TCadena[MAXCAD+1];
+typedef char TCadena[MAXCAD + 1]; // Type definition for a string with a maximum length
+
 struct Persona_R
 {
-TCadena PASS;
+    TCadena PASS; // Structure representing a person with a password
 };
 
-void pausa();
-void finalizar_programa();
-void borrar_pantalla();
-void Ingresar_PASS(Persona_R &p);
-void confirmar_PASS(Persona_R &p);
+void pausa(); // Function to pause the program
+void finalizar_programa(); // Function to end the program
+void borrar_pantalla(); // Function to clear the screen
+void Ingresar_PASS(Persona_R &p); // Function to input a password
+void confirmar_PASS(Persona_R &p); // Function to confirm a password
 
-void insertarPersonaTXT(TCadena nombreFichero, Persona_R p);
-void EscribePersonaFicheroTXT(ofstream &fichero, Persona_R p);
-void verificar_existencia_fichero(TCadena nombreFichero);
-void verificar_existencia_de_usuario(TCadena nombreFichero);
-void verificar_contrasena(TCadena nombreFichero,Persona_R &password);
+void insertarPersonaTXT(TCadena nombreFichero, Persona_R p); // Function to insert a person's data into a text file
+void EscribePersonaFicheroTXT(ofstream &fichero, Persona_R p); // Function to write a person's data into a text file
+void verificar_existencia_fichero(TCadena nombreFichero); // Function to verify the existence of a file
+void verificar_existencia_de_usuario(TCadena nombreFichero); // Function to verify the existence of a user
+void verificar_contrasena(TCadena nombreFichero, Persona_R &password); // Function to verify a password
 
 int main()
 {
-Persona_R p;;
-Persona_R password;;
-char opcion;
-int num;
-bool fin,encontrado;
-TCadena nombre_usuario_registrado;
-int opcion_menu;
+    Persona_R p; // Declare a Person object
+    Persona_R password; // Declare a Person object to hold a password
+    char opcion;
+    int num;
+    bool fin, encontrado;
+    TCadena nombre_usuario_registrado; // String to hold the registered username
+    int opcion_menu;
 
-cout << "\n	BIENVENIDOS AL SISTEMA DE LOGIN DE ISANCHEZV" << endl;
-cout << "        »»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»»" << endl;
-cout<< "«««««««««««««««««««««««««««««" << endl;
-cout << "1. Ingresar como Usuario" << endl;
-cout << "2. Registrarse" << endl;
-cout << "3. Ingrersar como Visitante" << endl;
-cout << "4. Salir del Programa." << endl;
-cout << "««««««««««««««««««««««««««««" << endl;
-cout << "-> Introduzca Opcion:  ";
-cin >> opcion_menu;
-if (opcion_menu==4) {finalizar_programa();}
-if((opcion_menu<MIN)||(opcion_menu>MAX)){
-try {        system("cls");
-                 cout <<"\n\n\t | ESTA OPCION  ES INCORRECTA |\n";
-                 cout <<"\n\n\t  ============================\n";
-                 system("cls");
-                 main();
+    cout << "\n\tWELCOME TO THE LOGIN SYSTEM BY ISANCHEZV" << endl;
+    cout << "        --------------------------------------" << endl;
+    cout << "--------------------------------------------------" << endl;
+    cout << "1. Log in as a User" << endl;
+    cout << "2. Register" << endl;
+    cout << "3. Log in as a Guest" << endl;
+    cout << "4. Exit the Program." << endl;
+    cout << "--------------------------------------------------" << endl;
+    cout << "-> Enter Option: ";
+    cin >> opcion_menu;
+
+    if (opcion_menu == 4)
+    {
+        finalizar_programa();
     }
-    catch(...)
-	{cout << "\n UN ERROR HA OCURRIDO " << endl; } }
 
-switch(opcion_menu)
-{
-case 1:
-cout << "\nDigite su Nombre de Usuario:     ";
-cin >> nombre_usuario_registrado;
-verificar_existencia_fichero(nombre_usuario_registrado);
+    if ((opcion_menu < MIN) || (opcion_menu > MAX))
+    {
+        try
+        {
+            system("cls");
+            cout << "\n\n\t | THIS OPTION IS INCORRECT |\n";
+            cout << "\n\n\t  ============================\n";
+            system("cls");
+            main();
+        }
+        catch (...)
+        {
+            cout << "\n AN ERROR HAS OCCURRED " << endl;
+        }
+    }
 
-verificar_contrasena(nombre_usuario_registrado,password);
-borrar_pantalla();main();
-break;
+    switch (opcion_menu)
+    {
+    case 1:
+        cout << "\nEnter your Username: ";
+        cin >> nombre_usuario_registrado;
+        verificar_existencia_fichero(nombre_usuario_registrado);
 
+        verificar_contrasena(nombre_usuario_registrado, password);
+        borrar_pantalla();
+        main();
+        break;
 
-case 2:
-cout << "\nEscriba su Nuevo Nombre de Usuario:    ";
-cin >> nombre_usuario_registrado;
-verificar_existencia_de_usuario(nombre_usuario_registrado);
-Ingresar_PASS(p);
-insertarPersonaTXT(nombre_usuario_registrado,p);
-borrar_pantalla();main();
-break;
+    case 2:
+        cout << "\nEnter your New Username: ";
+        cin >> nombre_usuario_registrado;
+        verificar_existencia_de_usuario(nombre_usuario_registrado);
+        Ingresar_PASS(p);
+        insertarPersonaTXT(nombre_usuario_registrado, p);
+        borrar_pantalla();
+        main();
+        break;
 
-case 3:
-cout << "\nHOLA VISITANTE \n";
-borrar_pantalla();main();
-break;
+    case 3:
+        cout << "\nHELLO GUEST\n";
+        borrar_pantalla();
+        main();
+        break;
+    }
+    return 0;
 }
-return 0;
-}
-
 
 void finalizar_programa()
 {
-borrar_pantalla();
-printf("Se ha CERRADO el programa");
-exit(0);
-}
-void pausa()
-{
-system("PAUSE");
-}
-void borrar_pantalla()
-{
-system("CLS");
-}
-void Ingresar_PASS(Persona_R &p)
-{
-cout << "Escriba su Nuevo password:                 " ;
-cin >> p.PASS;
-cout<<"\nSE HA REGISTRADO CORRECTAMENTE"<<endl;
-}
-void confirmar_PASS(Persona_R &password)
-{
-cout << "Escriba su password:                 " ;
-cin >> password.PASS;
+    borrar_pantalla();
+    printf("The program has been CLOSED");
+    exit(0);
 }
 
+void pausa()
+{
+    system("PAUSE");
+}
+
+void borrar_pantalla()
+{
+    system("CLS");
+}
+
+void Ingresar_PASS(Persona_R &p)
+{
+    cout << "Enter your New Password: ";
+    cin >> p.PASS;
+    cout << "\nREGISTRATION SUCCESSFUL" << endl;
+}
+
+void confirmar_PASS(Persona_R &password)
+{
+    cout << "Enter your Password: ";
+    cin >> password.PASS;
+}
 
 void insertarPersonaTXT(TCadena nombreFichero, Persona_R p)
 {
-ofstream out;
-out.open(nombreFichero,ios::app);
+    ofstream out;
+    out.open(nombreFichero, ios::app);
 
-if (out.bad()){
+    if (out.bad())
+    {
+        out.open(nombreFichero);
+    }
 
-out.open(nombreFichero);}
-EscribePersonaFicheroTXT(out,p);
-out.close();
+    EscribePersonaFicheroTXT(out, p);
+    out.close();
 }
 
 void EscribePersonaFicheroTXT(ofstream &fichero, Persona_R p)
 {
-fichero << p.PASS << SP;
+    fichero << p.PASS << SP;
 }
 
 void verificar_existencia_fichero(TCadena nombreFichero)
 {
-	ifstream archivo(nombreFichero);
+    ifstream archivo(nombreFichero);
     if (!archivo)
     {
-        cout<<"\nNombre de Usuario INCORRECTO.....INTENTELO DE NUEVO\n"<<endl; borrar_pantalla();main();
+        cout << "\nINCORRECT USERNAME.....PLEASE TRY AGAIN\n" << endl;
+        borrar_pantalla();
+        main();
     }
     else
     {
-        cout<<"\nNombre de Usuario CORRECTO\n"<<endl;
+        cout << "\nCORRECT USERNAME\n" << endl;
     }
 }
 
@@ -158,33 +178,39 @@ void verificar_existencia_de_usuario(TCadena nombreFichero)
     ifstream archivo(nombreFichero);
     if (!archivo)
     {
-        cout<<"\nNombre de Usuario DISPONIBLE\n"<<endl;
+        cout << "\nAVAILABLE USERNAME\n" << endl;
     }
     else
     {
-    cout<<"\n Este Nombre de Usuario ya Existe.....INTENTELO DE NUEVO"<<endl; borrar_pantalla();main();
+        cout << "\nThis Username already exists.....PLEASE TRY AGAIN\n" << endl;
+        borrar_pantalla();
+        main();
     }
 }
 
-void verificar_contrasena(TCadena nombreFichero,Persona_R &password)
+void verificar_contrasena(TCadena nombreFichero, Persona_R &password)
 {
-string cadena;
-string contrase;
-cout << "Escriba su password:                 " ;
-cin >> password.PASS;
-ifstream fichero(nombreFichero,ios::in);
+    string cadena;
+    string contrase;
+    cout << "Enter your Password: ";
+    cin >> password.PASS;
+    ifstream fichero(nombreFichero, ios::in);
 
-   while(!fichero.eof()) {
-    fichero >> cadena;
+    while (!fichero.eof())
+    {
+        fichero >> cadena;
+    }
 
-  }
-  if(cadena!=password.PASS){
-  cout<<"\n Password es INCORRECTO.....INTENTELO DE NUEVO\n"<<endl;
-  fichero.close();}
+    if (cadena != password.PASS)
+    {
+        cout << "\nIncorrect Password.....PLEASE TRY AGAIN\n" << endl;
+        fichero.close();
+    }
 
-if(cadena==password.PASS){
-cout<<"\n Su password es CORRECTA..!!! \n"<<endl;
-cout<<"\n BIENVENIDO \n"<<endl;
+    if (cadena == password.PASS)
+    {
+        cout << "\nYour Password is CORRECT..!!!\n" << endl;
+        cout << "\nWELCOME\n" << endl;
+    }
 }
-}
-//IsanchezV
+//Isanchezv
